@@ -12,6 +12,7 @@ object juego{
 		game.addVisual(cactus)
 		game.addVisual(dino)
 		game.addVisual(reloj)
+		game.addVisual(cascara)
 	
 		keyboard.space().onPressDo{ self.jugar()}
 		
@@ -23,6 +24,7 @@ object juego{
 		dino.iniciar()
 		reloj.iniciar()
 		cactus.iniciar()
+		cascara.iniciar()
 	}
 	
 	method jugar(){
@@ -39,6 +41,7 @@ object juego{
 		game.addVisual(gameOver)
 		cactus.detener()
 		reloj.detener()
+		cascara.detener()
 		dino.morir()
 	}
 	
@@ -56,7 +59,7 @@ object reloj {
 	var tiempo = 0
 	
 	method text() = tiempo.toString()
-	method position() = game.at(1, game.height()-1)
+	method position() = game.at(5, game.height()-3)
 	
 	method pasarTiempo() {
 		tiempo = tiempo +1
@@ -94,6 +97,33 @@ object cactus {
 	}
     method detener(){
 		game.removeTickEvent("moverCactus")
+	}
+}
+
+object cascara {
+	
+	const posicionInicial = game.at(18,1)
+	var position = posicionInicial
+	
+	method image() = "cascara.png"
+	method position() = position
+	
+	method iniciar(){
+		position = posicionInicial
+		game.onTick(velocidad,"moverCascara",{self.mover()})
+	}
+	
+	method mover(){
+		position = position.left(1)
+		if (position.x() == -10)
+			position = posicionInicial
+	}
+	
+	method chocar(){
+		juego.terminar()
+	}
+    method detener(){
+		game.removeTickEvent("moverCascara")
 	}
 }
 
